@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلة المشتريات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* تعريف متغيرات CSS (نفس المتغيرات في index.html) */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #212529;
+            --accent-color: #28a745;
+            --danger-color: #dc3545;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --light-text: #6c757d;
+            --border-color: #e9ecef;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-dark: rgba(0, 0, 0, 0.15);
+        }
+
+        /* تنسيقات عامة للجسم (نفس التنسيقات في index.html) */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding-top: 80px; /* لترك مساحة للشريط العلوي الثابت */
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            direction: rtl;
+            text-align: right;
+            overflow-x: hidden;
+        }
+
+        /* تنسيقات شريط التنقل العلوي (Navbar) - (نفس التنسيقات في index.html) */
+        .navbar {
+            background-color: rgba(33, 37, 41, 0.85);
+            backdrop-filter: blur(8px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar-logo {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-logo i {
+            margin-left: 10px;
+            color: #ffd700;
+        }
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-menu li {
+            margin-right: 25px;
+        }
+        .navbar-menu a {
+            color: var(--light-bg);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 5px 0;
+        }
+        .navbar-menu a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .navbar-menu a i {
+            margin-left: 8px;
+            font-size: 1.1em;
+            color: #adb5bd;
+        }
+        .navbar-menu a:hover i {
+            color: var(--primary-color);
+        }
+        .cart-icon {
+            position: relative;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .cart-icon:hover {
+            color: var(--light-bg);
+            transform: scale(1.1);
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 7px;
+            border-radius: 50%;
+            line-height: 1;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transform: translateX(50%);
+            right: 0;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* تنسيقات صفحة سلة المشتريات */
+        .cart-page {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .cart-items-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            background-color: #fcfcfc;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-left: 15px;
+        }
+        .cart-item-details {
+            flex-grow: 1;
+        }
+        .cart-item-details h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1.2em;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        .cart-item-details p {
+            font-size: 0.9em;
+            color: var(--light-text);
+            margin-bottom: 5px;
+        }
+        .cart-item-price {
+            font-family: 'Inter', sans-serif;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            text-align: left;
+            direction: ltr;
+        }
+        .cart-item-quantity {
+            font-size: 0.9em;
+            color: var(--light-text);
+            margin: 0 15px;
+            white-space: nowrap; /* لمنع كسر السطر */
+        }
+        .remove-item-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .remove-item-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .cart-summary {
+            border-top: 2px solid var(--primary-color);
+            padding-top: 20px;
+            text-align: left;
+        }
+        .cart-summary .total-price {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            direction: ltr; /* لجعل السعر إلى اليسار في النهاية */
+        }
+        .cart-summary .total-price span {
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+        .checkout-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .checkout-btn:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+        }
+        .empty-cart-message {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--light-text);
+            padding: 50px 0;
+        }
+
+        /* تنسيقات التذييل (Footer) - (نفس الموجود في index.html) */
+        .footer {
+            background-color: var(--secondary-color);
+            color: var(--light-bg);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .footer-section h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        .footer-section p, .footer-section ul {
+            font-size: 0.95rem;
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+        .footer-section a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons a {
+            font-size: 1.5rem;
+            color: var(--light-bg);
+            margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        /* تصميم استجابي (Responsive Design) */
+        @media (max-width: 992px) {
+            body { padding-top: 70px; }
+            .navbar-container { flex-wrap: wrap; justify-content: space-between; }
+            .navbar-logo { order: 1; margin-right: auto; }
+            .cart-icon { order: 2; margin-left: 15px; }
+            .menu-toggle { display: block; order: 3; }
+            .navbar-menu {
+                flex-direction: column; width: 100%; text-align: right; margin-top: 15px;
+                align-items: flex-end; display: none; order: 4;
+            }
+            .navbar-menu.active { display: flex; }
+            .navbar-menu li { margin: 0 0 10px 0; width: 100%; }
+            .navbar-menu a { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .navbar-menu li:last-child a { border-bottom: none; }
+
+            .cart-page { padding: 20px; }
+            .cart-item { flex-direction: column; align-items: flex-end; text-align: right; }
+            .cart-item-image { margin-left: 0; margin-bottom: 10px; }
+            .cart-item-details { width: 100%; }
+            .cart-item-quantity { margin: 10px 0; }
+            .remove-item-btn { width: 100%; }
+
+            .footer-container { flex-direction: column; align-items: center; }
+            .footer-section { text-align: center; width: 100%; }
+            .footer-section h4::after { right: 50%; transform: translateX(50%); }
+        }
+
+        @media (max-width: 768px) {
+            .section-title { font-size: 2rem; }
+            .cart-page { padding: 15px; }
+            .cart-item-image { width: 60px; height: 60px; }
+            .cart-item-details h4 { font-size: 1.1em; }
+            .cart-item-price { font-size: 1em; }
+            .remove-item-btn { font-size: 0.8em; padding: 6px 10px; }
+            .cart-summary .total-price { font-size: 1.5em; }
+            .checkout-btn { font-size: 1.1em; padding: 12px 25px; }
+            .navbar-logo { font-size: 1.6rem; }
+            .cart-icon { font-size: 1.3rem; }
+            .menu-toggle { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding-top: 60px; }
+            .navbar-logo { font-size: 1.4rem; }
+            .cart-icon { font-size: 1.2rem; }
+            .section-title { font-size: 1.8rem; }
+            .cart-item { padding: 10px; }
+            .cart-summary .total-price { font-size: 1.3em; }
+            .checkout-btn { font-size: 1em; padding: 10px 20px; }
+            .footer-section { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي (Navbar) - (نفس الموجود في index.html) -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <i class="fas fa-mobile-alt"></i> متجر التقنية
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="index.html#products-section"><i class="fas fa-box-open"></i> المنتجات</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon" id="cartIconLink">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- قسم سلة المشتريات -->
+        <section class="cart-page">
+            <h2 class="section-title">سلة المشتريات</h2>
+            <ul class="cart-items-list" id="cartItemsList">
+                <!-- عناصر السلة سيتم إضافتها هنا بواسطة JavaScript -->
+            </ul>
+            <div id="emptyCartMessage" class="empty-cart-message" style="display: none;">
+                سلة مشترياتك فارغة! <a href="index.html#products-section">ابدأ التسوق الآن</a>.
+            </div>
+            <div class="cart-summary">
+                <div class="total-price">
+                    <span>الإجمالي:</span> <span id="cartTotalPrice">0.00 ج.م.</span>
+                </div>
+                <button class="checkout-btn">اتمام عملية الشراء</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- التذييل (Footer) - (نفس الموجود في index.html) -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>عن متجر التقنية</h4>
+                <p>
+                    نحن وجهتك الأولى لأحدث الأجهزة الإلكترونية والحلول التقنية. نسعى لتقديم أفضل المنتجات بأسعار تنافسية وخدمة عملاء ممتازة.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                    <li><a href="#">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 شارع التكنولوجيا، القاهرة، مصر</p>
+                <p><i class="fas fa-phone-alt"></i> +20 100 123 4567</p>
+                <p><i class="fas fa-envelope"></i> info@techstore.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>تابعنا</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 متجر التقنية. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript لصفحة سلة المشتريات
+        document.addEventListener('DOMContentLoaded', () => {
+            const products = [
+                { id: 'ph1', name: "هاتف سامسونج جلاكسي S24 الترا", price: 35000, imageUrl: "https://placehold.co/80x80/007bff/ffffff?text=S24" },
+                { id: 'hp1', name: "سماعات سوني WH-1000XM5", price: 8500, imageUrl: "https://placehold.co/80x80/28a745/ffffff?text=XM5" },
+                { id: 'sw1', name: "ساعة أبل واتش الترا 2", price: 28000, imageUrl: "https://placehold.co/80x80/dc3545/ffffff?text=Watch" },
+                { id: 'lp1', name: "لابتوب ديل XPS 15", price: 42000, imageUrl: "https://placehold.co/80x80/17a2b8/ffffff?text=XPS" },
+                { id: 'cam1', name: "كاميرا سوني Alpha a7 III", price: 48000, imageUrl: "https://placehold.co/80x80/ffc107/ffffff?text=a7III" },
+                { id: 'tab1', name: "تابلت سامسونج جلاكسي تاب S9", price: 25000, imageUrl: "https://placehold.co/80x80/6f42c1/ffffff?text=TabS9" },
+            ]; // قائمة مبسطة للمنتجات للحصول على الأسماء والصور في السلة
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCountElement = document.getElementById('cartCount');
+            const cartItemsList = document.getElementById('cartItemsList');
+            const cartTotalPriceElement = document.getElementById('cartTotalPrice');
+            const emptyCartMessage = document.getElementById('emptyCartMessage');
+            const menuToggle = document.getElementById('menuToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+
+            function updateCartCount() {
+                cartCountElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            }
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            // إزالة منتج من السلة
+            function removeFromCart(productId) {
+                cart = cart.filter(item => item.id !== productId);
+                saveCart();
+                renderCartItems(); // إعادة عرض السلة بعد الإزالة
+                updateCartCount();
+            }
+
+            // عرض عناصر السلة
+            function renderCartItems() {
+                cartItemsList.innerHTML = ''; // تفريغ القائمة
+                let total = 0;
+
+                if (cart.length === 0) {
+                    emptyCartMessage.style.display = 'block';
+                    cartTotalPriceElement.textContent = '0.00 ج.م.';
+                    document.querySelector('.cart-summary').style.display = 'none'; // إخفاء ملخص السلة
+                    return;
+                } else {
+                    emptyCartMessage.style.display = 'none';
+                    document.querySelector('.cart-summary').style.display = 'block';
+                }
+
+                cart.forEach(item => {
+                    const productData = products.find(p => p.id === item.id);
+                    const imageUrl = productData ? productData.imageUrl : "https://placehold.co/80x80/CCCCCC/000000?text=غير+متوفر";
+                    const price = productData ? productData.price : 0;
+
+                    const listItem = document.createElement('li');
+                    listItem.className = 'cart-item';
+                    listItem.innerHTML = `
+                        <img src="${imageUrl}" alt="${item.name}" class="cart-item-image" onerror="this.onerror=null;this.src='https://placehold.co/80x80/CCCCCC/000000?text=خطأ';">
+                        <div class="cart-item-details">
+                            <h4>${item.name}</h4>
+                            <p class="cart-item-price">${(price * item.quantity).toLocaleString('ar-EG')} ج.م.</p>
+                        </div>
+                        <span class="cart-item-quantity">الكمية: ${item.quantity}</span>
+                        <button class="remove-item-btn" data-product-id="${item.id}">إزالة</button>
+                    `;
+                    cartItemsList.appendChild(listItem);
+                    total += price * item.quantity;
+                });
+
+                cartTotalPriceElement.textContent = `${total.toLocaleString('ar-EG')} ج.م.`;
+
+                // إضافة مستمعي الأحداث لأزرار "إزالة"
+                document.querySelectorAll('.remove-item-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const productId = event.target.dataset.productId;
+                        removeFromCart(productId);
+                    });
+                });
+            }
+
+            // تشغيل وظائف الصفحة عند التحميل
+            renderCartItems();
+            updateCartCount();
+
+            // وظيفة فتح/إغلاق قائمة الجوال (Hamburger menu)
+            menuToggle.addEventListener('click', () => {
+                navbarMenu.classList.toggle('active');
+            });
+
+            // يمكن إضافة وظيفة لزر إتمام الشراء هنا
+            document.querySelector('.checkout-btn').addEventListener('click', () => {
+                if (cart.length > 0) {
+                    alert('جاري اتمام عملية الشراء! (هذه وظيفة وهمية فقط)');
+                    // هنا يمكن إضافة منطق لإرسال الطلب إلى الخادم أو مسح السلة
+                    // cart = [];
+                    // saveCart();
+                    // renderCartItems();
+                    // updateCartCount();
+                } else {
+                    alert('سلة المشتريات فارغة لا يمكن إتمام الشراء.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا - متجر التقنية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* تعريف متغيرات CSS (نفس المتغيرات في index.html) */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #212529;
+            --accent-color: #28a745;
+            --danger-color: #dc3545;
+            --light-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #212529;
+            --light-text: #6c757d;
+            --border-color: #e9ecef;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --shadow-dark: rgba(0, 0, 0, 0.15);
+        }
+
+        /* تنسيقات عامة للجسم (نفس التنسيقات في index.html) */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding-top: 80px; /* لترك مساحة للشريط العلوي الثابت */
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            direction: rtl;
+            text-align: right;
+            overflow-x: hidden;
+        }
+
+        /* تنسيقات شريط التنقل العلوي (Navbar) - (نفس التنسيقات في index.html) */
+        .navbar {
+            background-color: rgba(33, 37, 41, 0.85);
+            backdrop-filter: blur(8px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar-logo {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-logo i {
+            margin-left: 10px;
+            color: #ffd700;
+        }
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-menu li {
+            margin-right: 25px;
+        }
+        .navbar-menu a {
+            color: var(--light-bg);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 5px 0;
+        }
+        .navbar-menu a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .navbar-menu a i {
+            margin-left: 8px;
+            font-size: 1.1em;
+            color: #adb5bd;
+        }
+        .navbar-menu a:hover i {
+            color: var(--primary-color);
+        }
+        .cart-icon {
+            position: relative;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .cart-icon:hover {
+            color: var(--light-bg);
+            transform: scale(1.1);
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 7px;
+            border-radius: 50%;
+            line-height: 1;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            transform: translateX(50%);
+            right: 0;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* تنسيقات صفحة اتصل بنا */
+        .contact-page {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            text-align: center;
+        }
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        .contact-info {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .contact-info p {
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .contact-info p i {
+            margin-left: 10px;
+            color: var(--primary-color);
+            font-size: 1.3em;
+        }
+        .contact-form .form-group {
+            margin-bottom: 20px;
+            text-align: right; /* محاذاة لليمين */
+        }
+        .contact-form label {
+            display: block;
+            font-size: 1em;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1em;
+            color: var(--text-color);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box; /* لضمان أن الحشوة لا تزيد من العرض الكلي */
+        }
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+        .contact-form textarea {
+            resize: vertical; /* السماح بتغيير حجم مربع النص عمودياً */
+            min-height: 120px;
+        }
+        .contact-form button {
+            display: block;
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .contact-form button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        /* تنسيقات التذييل (Footer) - (نفس الموجود في index.html) */
+        .footer {
+            background-color: var(--secondary-color);
+            color: var(--light-bg);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .footer-section h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        .footer-section p, .footer-section ul {
+            font-size: 0.95rem;
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+        .footer-section a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons a {
+            font-size: 1.5rem;
+            color: var(--light-bg);
+            margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+        /* تصميم استجابي (Responsive Design) */
+        @media (max-width: 992px) {
+            body { padding-top: 70px; }
+            .navbar-container { flex-wrap: wrap; justify-content: space-between; }
+            .navbar-logo { order: 1; margin-right: auto; }
+            .cart-icon { order: 2; margin-left: 15px; }
+            .menu-toggle { display: block; order: 3; }
+            .navbar-menu {
+                flex-direction: column; width: 100%; text-align: right; margin-top: 15px;
+                align-items: flex-end; display: none; order: 4;
+            }
+            .navbar-menu.active { display: flex; }
+            .navbar-menu li { margin: 0 0 10px 0; width: 100%; }
+            .navbar-menu a { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .navbar-menu li:last-child a { border-bottom: none; }
+
+            .contact-page { padding: 20px; }
+
+            .footer-container { flex-direction: column; align-items: center; }
+            .footer-section { text-align: center; width: 100%; }
+            .footer-section h4::after { right: 50%; transform: translateX(50%); }
+        }
+
+        @media (max-width: 768px) {
+            .section-title { font-size: 2rem; }
+            .contact-page { padding: 15px; }
+            .contact-info p { font-size: 1em; }
+            .contact-form input, .contact-form textarea, .contact-form button { font-size: 1em; }
+            .navbar-logo { font-size: 1.6rem; }
+            .cart-icon { font-size: 1.3rem; }
+            .menu-toggle { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding-top: 60px; }
+            .navbar-logo { font-size: 1.4rem; }
+            .cart-icon { font-size: 1.2rem; }
+            .section-title { font-size: 1.8rem; }
+            .contact-page { padding: 10px; }
+            .contact-info p { font-size: 0.9em; }
+            .contact-form input, .contact-form textarea, .contact-form button { font-size: 0.9em; padding: 10px; }
+            .footer-section { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل العلوي (Navbar) - (نفس الموجود في index.html) -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-logo">
+                <i class="fas fa-mobile-alt"></i> متجر التقنية
+            </a>
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="index.html#products-section"><i class="fas fa-box-open"></i> المنتجات</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                <li>
+                    <a href="cart.html" class="cart-icon" id="cartIconLink">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- قسم "اتصل بنا" -->
+        <section class="contact-page">
+            <h2 class="section-title">اتصل بنا</h2>
+            <div class="contact-info">
+                <p><i class="fas fa-map-marker-alt"></i> 123 شارع التكنولوجيا، القاهرة، مصر</p>
+                <p><i class="fas fa-phone-alt"></i> +20 100 123 4567 (المبيعات)</p>
+                <p><i class="fas fa-phone-alt"></i> +20 100 765 4321 (الدعم الفني)</p>
+                <p><i class="fas fa-envelope"></i> info@techstore.com</p>
+                <p><i class="fas fa-clock"></i> مواعيد العمل: الأحد - الخميس، 9 صباحًا - 6 مساءً</p>
+            </div>
+            <h3>أرسل لنا رسالة</h3>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">الاسم الكامل:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">الموضوع:</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">رسالتك:</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit">إرسال الرسالة</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- التذييل (Footer) - (نفس الموجود في index.html) -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>عن متجر التقنية</h4>
+                <p>
+                    نحن وجهتك الأولى لأحدث الأجهزة الإلكترونية والحلول التقنية. نسعى لتقديم أفضل المنتجات بأسعار تنافسية وخدمة عملاء ممتازة.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                    <li><a href="#">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 شارع التكنولوجيا، القاهرة، مصر</p>
+                <p><i class="fas fa-phone-alt"></i> +20 100 123 4567</p>
+                <p><i class="fas fa-envelope"></i> info@techstore.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>تابعنا</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 متجر التقنية. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript لصفحة اتصل بنا (لإدارة شريط التنقل فقط)
+        document.addEventListener('DOMContentLoaded', () => {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCountElement = document.getElementById('cartCount');
+            const menuToggle = document.getElementById('menuToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+
+            function updateCartCount() {
+                cartCountElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            }
+
+            updateCartCount();
+
+            // وظيفة فتح/إغلاق قائمة الجوال (Hamburger menu)
+            menuToggle.addEventListener('click', () => {
+                navbarMenu.classList.toggle('active');
+            });
+
+            // مثال بسيط للتعامل مع إرسال النموذج (في بيئة حقيقية يتم إرساله للخادم)
+            document.querySelector('.contact-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // منع الإرسال الافتراضي للصفحة
+
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+
+                console.log('بيانات النموذج:');
+                console.log(`الاسم: ${name}`);
+                console.log(`البريد الإلكتروني: ${email}`);
+                console.log(`الموضوع: ${subject}`);
+                console.log(`الرسالة: ${message}`);
+
+                alert('تم استلام رسالتك بنجاح! سنتواصل معك قريباً.');
+
+                // يمكنك إضافة كود لإرسال البيانات إلى الخادم هنا
+                this.reset(); // مسح النموذج بعد الإرسال
+            });
+        });
+    </script>
+</body>
+</html>

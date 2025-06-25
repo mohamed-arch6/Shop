@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجري لبيع الإلكترونيات - الرئيسية</title>
+    <!-- استيراد خط 'Inter' من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- استيراد Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* تعريف متغيرات CSS للألوان الرئيسية لتسهيل التعديل المستقبلي */
+        :root {
+            --primary-color: #007bff; /* أزرق بوتستراب - للأزرار والعناوين الرئيسية */
+            --secondary-color: #212529; /* أسود/رمادي داكن - للهيدر والفوتر والخلفيات الداكنة */
+            --accent-color: #28a745; /* أخضر - لزر الإضافة للسلة */
+            --danger-color: #dc3545; /* أحمر - لزر الإزالة من السلة */
+            --light-bg: #f8f9fa; /* خلفية فاتحة جداً للصفحة */
+            --card-bg: #ffffff; /* خلفية بطاقات المنتج لتبدو بارزة */
+            --text-color: #212529; /* لون النص الأساسي لسهولة القراءة */
+            --light-text: #6c757d; /* لون النص الثانوي للتفاصيل الدقيقة */
+            --border-color: #e9ecef; /* لون حدود خفيف لعناصر الواجهة */
+            --shadow-light: rgba(0, 0, 0, 0.08); /* ظل خفيف */
+            --shadow-dark: rgba(0, 0, 0, 0.15); /* ظل أغمق */
+        }
+
+        /* تنسيقات عامة للجسم لضمان تجربة مستخدم متناسقة */
+        body {
+            font-family: 'Inter', sans-serif; /* تطبيق خط Inter */
+            margin: 0;
+            padding-top: 80px; /* لترك مساحة للشريط العلوي الثابت */
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            direction: rtl; /* ضبط اتجاه النص من اليمين لليسار للعربية */
+            text-align: right; /* ضبط محاذاة النص لليمين للعربية */
+            overflow-x: hidden; /* منع التمرير الأفقي غير المرغوب فيه */
+        }
+
+        /* تنسيقات قسم الخلفية المتحركة في البداية (Hero Section) */
+        .hero-section {
+            width: 100%;
+            height: 450px; /* ارتفاع القسم */
+            background: linear-gradient(135deg, #007bff 0%, #6610f2 100%); /* تدرج لوني حيوي كخلفية بديلة */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--card-bg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow-dark);
+        }
+
+        /* طبقة تراكب (Overlay) لجعل النص مقروءاً فوق الفيديو/الخلفية */
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* طبقة شفافة داكنة لزيادة التباين */
+            z-index: 1;
+        }
+
+        /* هذا الجزء خاص بدمج الفيديو (قم بإلغاء تعليقه إذا كان لديك فيديو) */
+        .video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            background-size: cover;
+            object-fit: cover; /* لضمان تغطية الفيديو للمنطقة */
+        }
+        /* لتفعيل الفيديو، قم بإلغاء تعليق وسم <video> في ملف HTML واستبدل "مسار/فيديوك.mp4" بمسار الفيديو الخاص بك */
+
+
+        .hero-content {
+            z-index: 2; /* التأكد من ظهور المحتوى فوق الخلفية المتحركة والتراكب */
+        }
+
+        .hero-content h2 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800; /* خط سميك جداً للعنوان لجذب الانتباه */
+            font-size: 3.8em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3); /* ظل نصي لزيادة الوضوح */
+        }
+
+        .hero-content p {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.6em;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95; /* شفافية بسيطة */
+        }
+
+        /* تنسيقات شريط التنقل العلوي (Navbar) */
+        .navbar {
+            background-color: rgba(33, 37, 41, 0.85); /* خلفية شبه شفافة داكنة */
+            backdrop-filter: blur(8px); /* تأثير الزجاج */
+            position: fixed; /* تثبيت الشريط في الأعلى */
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* لضمان ظهوره فوق جميع العناصر الأخرى */
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .navbar-logo {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            animation: fadeInDown 1s ease-out; /* حركة عند التحميل */
+        }
+        /* حركة اللوجو */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .navbar-logo i {
+            margin-left: 10px;
+            color: #ffd700; /* لون ذهبي للأيقونة */
+            transition: transform 0.3s ease;
+        }
+        .navbar-logo:hover i {
+            transform: rotate(10deg) scale(1.1);
+        }
+        .navbar-menu {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-menu li {
+            margin-right: 25px;
+        }
+        .navbar-menu a {
+            color: var(--light-bg);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 5px 0;
+        }
+        .navbar-menu a:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        .navbar-menu a i {
+            margin-left: 8px;
+            font-size: 1.1em;
+            color: #adb5bd;
+        }
+        .navbar-menu a:hover i {
+            color: var(--primary-color);
+        }
+        /* أيقونة سلة الشراء */
+        .cart-icon {
+            position: relative;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+            margin-left: 15px; /* مسافة عن باقي الروابط */
+            display: flex; /* لتوسيط العداد */
+            align-items: center;
+        }
+        .cart-icon:hover {
+            color: var(--light-bg);
+            transform: scale(1.1);
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 7px;
+            border-radius: 50%;
+            line-height: 1;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            /* لضبط العداد فوق الأيقونة مباشرة في RTL */
+            transform: translateX(50%); /* تعديل موقعه ليكون فوق الأيقونة */
+            right: 0;
+        }
+        /* زر القائمة المتجاوبة (Hamburger) */
+        .menu-toggle {
+            display: none; /* مخفي افتراضيا لسطح المكتب */
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* تنسيقات قسم المنتجات */
+        .products-section {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 أو 4 في الصف */
+            gap: 30px;
+            justify-content: center;
+        }
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px var(--shadow-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px var(--shadow-dark);
+        }
+        .product-card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .product-card-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-card-info h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+            font-size: 1.4em;
+        }
+        .product-card-info p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95em;
+            color: var(--light-text);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .product-price {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-align: left; /* لضبط اتجاه الأرقام اللاتينية من اليسار لليمين */
+            direction: ltr;
+        }
+        .add-to-cart-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        /* تنسيقات التذييل (Footer) */
+        .footer {
+            background-color: var(--secondary-color);
+            color: var(--light-bg);
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        .footer-section h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+        .footer-section p, .footer-section ul {
+            font-size: 0.95rem;
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 8px;
+        }
+        .footer-section a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-section a:hover {
+            color: var(--primary-color);
+        }
+        .social-icons a {
+            font-size: 1.5rem;
+            color: var(--light-bg);
+            margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--light-text);
+        }
+
+
+        /* تصميم استجابي (Responsive Design) */
+        @media (max-width: 992px) {
+            body { padding-top: 70px; } /* تعديل حشوة الجسم لشريط التنقل */
+            .navbar-container {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            .navbar-logo { order: 1; margin-right: auto; }
+            .cart-icon { order: 2; margin-left: 15px; }
+            .menu-toggle { display: block; order: 3; }
+            .navbar-menu {
+                flex-direction: column;
+                width: 100%;
+                text-align: right;
+                margin-top: 15px;
+                align-items: flex-end;
+                display: none; /* مخفية بواسطة JS */
+                order: 4; /* تأكد من ظهورها في الأسفل عند الفتح */
+            }
+            .navbar-menu.active { /* يتم تفعيلها بواسطة JS */
+                display: flex;
+            }
+            .navbar-menu li {
+                margin: 0 0 10px 0;
+                width: 100%;
+            }
+            .navbar-menu a {
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            .navbar-menu li:last-child a {
+                border-bottom: none;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .footer-section {
+                text-align: center;
+                width: 100%;
+            }
+            .footer-section h4::after {
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { height: 350px; }
+            .hero-content h2 { font-size: 2.8rem; }
+            .hero-content p { font-size: 1.2rem; }
+            .section-title { font-size: 2rem; }
+            .product-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+            .product-card-image { height: 180px; }
+            .navbar-logo { font-size: 1.6rem; }
+            .cart-icon { font-size: 1.3rem; }
+            .menu-toggle { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding-top: 60px; }
+            .hero-section { height: 300px; }
+            .hero-content h2 { font-size: 2.2rem; }
+            .hero-content p { font-size: 1rem; }
+            .navbar-logo { font-size: 1.4rem; }
+            .cart-icon { font-size: 1.2rem; }
+            .section-title { font-size: 1.8rem; }
+            .product-grid { grid-template-columns: 1fr; }
+            .product-card-image { height: 160px; }
+            .footer-section { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <!-- قسم البداية مع خلفية متحركة ومحتوى overlaid -->
+    <div class="hero-section">
+        <!-- لإضافة فيديو كخلفية، قم بإلغاء تعليق هذا الكود واستبدال "your-video-url.mp4" بمسار الفيديو الخاص بك.
+             يمكنك العثور على فيديوهات تقنية مجانية على مواقع مثل Pexels أو Pixabay. -->
+        <!--
+        <video autoplay muted loop class="video-background">
+            <source src="your-video-url.mp4" type="video/mp4">
+            متصفحك لا يدعم عنصر الفيديو.
+        </video>
+        -->
+        <div class="hero-content">
+            <h2>اكتشف عالم التقنية في متجرنا!</h2>
+            <p>أحدث الهواتف الذكية، السماعات، الأجهزة اللوحية، والمزيد. كل ما تحتاجه في مكان واحد.</p>
+        </div>
+    </div>
+
+    <!-- شريط التنقل العلوي (Navbar) -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <!-- شعار الموقع مع أيقونة متحركة -->
+            <a href="index.html" class="navbar-logo">
+                <i class="fas fa-mobile-alt"></i> متجر التقنية
+            </a>
+            <!-- زر القائمة المتجاوبة (Hamburger icon) -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- روابط القائمة -->
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="#products-section"><i class="fas fa-box-open"></i> المنتجات</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> من نحن</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
+                <li>
+                    <!-- أيقونة سلة الشراء مع عداد العناصر -->
+                    <a href="cart.html" class="cart-icon" id="cartIconLink">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- قسم عرض المنتجات -->
+        <section id="products-section" class="products-section">
+            <h2 class="section-title">منتجاتنا المميزة</h2>
+            <div class="product-grid" id="productGrid">
+                <!-- المنتجات سيتم إضافتها هنا بواسطة JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- التذييل (Footer) -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>عن متجر التقنية</h4>
+                <p>
+                    نحن وجهتك الأولى لأحدث الأجهزة الإلكترونية والحلول التقنية. نسعى لتقديم أفضل المنتجات بأسعار تنافسية وخدمة عملاء ممتازة.
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                    <li><a href="#">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 شارع التكنولوجيا، القاهرة، مصر</p>
+                <p><i class="fas fa-phone-alt"></i> +20 100 123 4567</p>
+                <p><i class="fas fa-envelope"></i> info@techstore.com</p>
+            </div>
+            <div class="footer-section">
+                <h4>تابعنا</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 متجر التقنية. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript لتشغيل وظائف الموقع
+        document.addEventListener('DOMContentLoaded', () => {
+            const products = [
+                {
+                    id: 'ph1',
+                    name: "هاتف سامسونج جلاكسي S24 الترا",
+                    description: "أقوى هواتف سامسونج بتقنية الكاميرا الذكية وشاشة Dynamic AMOLED 2X.",
+                    features: {
+                        ram: "12GB",
+                        storage: "256GB / 512GB",
+                        camera: "200MP رئيسية + 12MP فائقة الاتساع + 10MP تقريب بصري + 50MP تقريب بصري",
+                        battery: "5000mAh",
+                        color: "أسود، رمادي، بنفسجي، أصفر"
+                    },
+                    price: 35000,
+                    imageUrl: "https://placehold.co/400x220/007bff/ffffff?text=Galaxy+S24+Ultra",
+                    category: "هواتف"
+                },
+                {
+                    id: 'hp1',
+                    name: "سماعات سوني WH-1000XM5 عازلة للضوضاء",
+                    description: "تجربة صوتية فائقة مع أفضل تقنية إلغاء للضوضاء ومكالمات واضحة.",
+                    features: {
+                        battery: "30 ساعة مع ANC",
+                        connectivity: "بلوتوث 5.2",
+                        noiseCancellation: "نعم (معالج QN1)",
+                        color: "أسود، فضي"
+                    },
+                    price: 8500,
+                    imageUrl: "https://placehold.co/400x220/28a745/ffffff?text=Sony+XM5",
+                    category: "سماعات"
+                },
+                {
+                    id: 'sw1',
+                    name: "ساعة أبل واتش الترا 2",
+                    description: "ساعة رياضية متينة بميزات صحية متقدمة وعمر بطارية طويل.",
+                    features: {
+                        display: "Retina Always-On",
+                        processor: "S9 SiP",
+                        battery: "36 ساعة (حتى 72 ساعة في وضع الطاقة المنخفضة)",
+                        waterResistance: "100 متر",
+                        color: "تيتانيوم"
+                    },
+                    price: 28000,
+                    imageUrl: "https://placehold.co/400x220/dc3545/ffffff?text=Apple+Watch+Ultra+2",
+                    category: "ساعات ذكية"
+                },
+                {
+                    id: 'lp1',
+                    name: "لابتوب ديل XPS 15",
+                    description: "تصميم أنيق وأداء قوي يلبي احتياجاتك الإبداعية والمهنية.",
+                    features: {
+                        processor: "Intel Core i7",
+                        ram: "16GB",
+                        storage: "512GB SSD",
+                        display: "15.6 بوصة FHD+",
+                        graphics: "NVIDIA GeForce RTX 4050"
+                    },
+                    price: 42000,
+                    imageUrl: "https://placehold.co/400x220/17a2b8/ffffff?text=Dell+XPS+15",
+                    category: "لابتوب"
+                },
+                {
+                    id: 'cam1',
+                    name: "كاميرا سوني Alpha a7 III",
+                    description: "كاميرا Mirrorless كاملة الإطار متعددة الاستخدامات للمصورين المحترفين.",
+                    features: {
+                        sensor: "24.2MP Full-Frame",
+                        video: "4K UHD",
+                        autofocus: "693 نقطة AF",
+                        iso: "حتى 204800"
+                    },
+                    price: 48000,
+                    imageUrl: "https://placehold.co/400x220/ffc107/ffffff?text=Sony+Alpha+a7+III",
+                    category: "كاميرات"
+                },
+                {
+                    id: 'tab1',
+                    name: "تابلت سامسونج جلاكسي تاب S9",
+                    description: "شاشة رائعة وقلم S Pen لتجربة إنتاجية وترفيه لا مثيل لها.",
+                    features: {
+                        display: "11 بوصة Dynamic AMOLED 2X",
+                        processor: "Snapdragon 8 Gen 2",
+                        ram: "8GB / 12GB",
+                        storage: "128GB / 256GB",
+                        battery: "8400mAh"
+                    },
+                    price: 25000,
+                    imageUrl: "https://placehold.co/400x220/6f42c1/ffffff?text=Galaxy+Tab+S9",
+                    category: "تابلت"
+                },
+            ];
+
+            // وظائف JavaScript لسلة المشتريات والتنقل
+            let cart = JSON.parse(localStorage.getItem('cart')) || []; // تحميل السلة من localStorage
+            const cartCountElement = document.getElementById('cartCount');
+            const productGridElement = document.getElementById('productGrid');
+            const menuToggle = document.getElementById('menuToggle');
+            const navbarMenu = document.getElementById('navbarMenu');
+
+            // تحديث عدد عناصر السلة في شريط التنقل
+            function updateCartCount() {
+                cartCountElement.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+            }
+
+            // حفظ السلة في localStorage
+            function saveCart() {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            // إضافة منتج إلى السلة
+            function addToCart(productId) {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    const existingItem = cart.find(item => item.id === productId);
+                    if (existingItem) {
+                        existingItem.quantity++;
+                    } else {
+                        cart.push({ ...product, quantity: 1 });
+                    }
+                    saveCart();
+                    updateCartCount();
+                    // استخدام رسالة بسيطة للتأكيد (يمكن استبدالها بـ modal أو notification)
+                    alert(`تمت إضافة "${product.name}" إلى السلة!`);
+                }
+            }
+
+            // عرض المنتجات في الصفحة الرئيسية
+            function renderProducts() {
+                productGridElement.innerHTML = ''; // تفريغ الشبكة
+                products.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card';
+                    productCard.innerHTML = `
+                        <a href="product-details.html?id=${product.id}" class="product-card-link">
+                            <img src="${product.imageUrl}" alt="${product.name}" class="product-card-image" onerror="this.onerror=null;this.src='https://placehold.co/400x220/CCCCCC/000000?text=صورة+غير+متوفرة';">
+                        </a>
+                        <div class="product-card-info">
+                            <a href="product-details.html?id=${product.id}"><h3>${product.name}</h3></a>
+                            <p>${product.description}</p>
+                            <div class="product-price">${product.price.toLocaleString('ar-EG')} ج.م.</div>
+                            <button class="add-to-cart-btn" data-product-id="${product.id}">أضف إلى السلة</button>
+                        </div>
+                    `;
+                    productGridElement.appendChild(productCard);
+                });
+
+                // إضافة مستمعي الأحداث لأزرار "أضف إلى السلة"
+                document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        event.preventDefault(); // منع انتقال الصفحة
+                        const productId = event.target.dataset.productId;
+                        addToCart(productId);
+                    });
+                });
+            }
+
+            // تشغيل وظائف الصفحة عند التحميل
+            renderProducts();
+            updateCartCount();
+
+            // وظيفة فتح/إغلاق قائمة الجوال (Hamburger menu)
+            menuToggle.addEventListener('click', () => {
+                navbarMenu.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
